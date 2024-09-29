@@ -6,8 +6,8 @@ public class BirdSpawner : MonoBehaviour
 {
     public GameObject birdPrefab; // Reference to the baby bird prefab
     public int numberOfBirds = 5; // Number of birds to spawn
-    public Vector3[] positionArray = new[] { new Vector3(32f, 41f, 52f), new Vector3(42f, 41f, 62f), 
-        new Vector3(66f, 41f, 80f), new Vector3(52f, 41f, 72f), new Vector3(80f, 41f, 55f) };
+
+    public Vector3[] positionArray = new[] { new Vector3(53f, 41f, 65f), new Vector3(91f, 41f, 42f), new Vector3(32f, 41f, 46f), new Vector3(76f, 41f, 5f), new Vector3(45f, 41f, 0f) };
 
     GameController gc;
 
@@ -18,14 +18,8 @@ public class BirdSpawner : MonoBehaviour
     }
     void Update()
     {
-        if (gc.deleteBirds == true)
-        {
-            Destroy(GameObject.FindGameObjectWithTag("BabyBird"));
-
-        }
         if (gc.needToSpawnBirds == true)
         {
-            gc.deleteBirds = false;
             SpawnBirds();
             gc.needToSpawnBirds = false;
         }

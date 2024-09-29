@@ -17,7 +17,7 @@ public class ResetBirds : MonoBehaviour
         {
             gc.collectible = 0;
             gc.deleteBirds = true;
-            gc.needToSpawnBirds = true;
+
         }
     }
 }

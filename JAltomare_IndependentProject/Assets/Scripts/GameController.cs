@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     public bool needToSpawnBirds = false;
     public bool deleteBirds = false;
 
+    // Player Stats
+    private int playerHP = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +23,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (collectible == 5)
+        if (collectible >= 5)
         {
             collectedAll = true;
         }
