@@ -20,24 +20,16 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
     }
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Projectile(Clone)") 
+        if (collision.gameObject.name == "Projectile(Clone)")
         {
             enemyLives -= 1;
             Debug.Log("Critical Hit!");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

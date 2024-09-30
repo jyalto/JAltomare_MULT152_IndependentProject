@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -29,6 +31,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1, 180)] private float upperLookLimit = 80.0f;
     [SerializeField, Range(1, 180)] private float lowerLookLimit = 80.0f;
 
+    // Health Parameters
+    [SerializeField] private float maxHealth = 100;
+    [SerializeField] private float timeBeforeRegenStarts = 4;
+    [SerializeField] private float healthValueIncrement = 1;
+    [SerializeField] private float healthTimeIncrement = 0.05f;
+    private float currentHealth;
+    private Coroutine regeneratingHealth;
+    public static Action<float> OnTakeDamage;
+    public static Action<float> OnDamage;
+    public static Action<float> OnHeal;
+
     // Jump Parameters
     [SerializeField] private float jumpForce = 8.0f;
     [SerializeField] private float gravity = 30.0f;
@@ -53,10 +66,20 @@ public class PlayerMovement : MonoBehaviour
     public float projectileSpeed = 100f;
     private bool isShooting;
 
+    private void OnEnable()
+    {
+        OnTakeDamage += ApplyDamage;
+    }
+    private void OnDisable() 
+    {
+        OnTakeDamage -= ApplyDamage;
+    }
+
     void Awake()
     {
         playerCamera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
+        currentHealth = maxHealth;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -143,6 +166,33 @@ public class PlayerMovement : MonoBehaviour
             currentInteractable.OnInteract();
         }
     }
+    private void ApplyDamage(float dmg) 
+    { 
+        currentHealth -= dmg;
+        OnDamage?.Invoke(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            KillPlayer();
+        }
+        else if (regeneratingHealth != null)
+        {
+            StopCoroutine(regeneratingHealth);
+        }
+        regeneratingHealth = StartCoroutine(RegenerateHealth());
+
+
+    }
+    private void KillPlayer()
+    {
+        currentHealth = 0;
+
+        if(regeneratingHealth != null)
+        {
+            StopCoroutine(regeneratingHealth);
+            print("DEAD");
+        }
+    }
     private void ApplyFinalMovements()
     {
         if (!characterController.isGrounded)
@@ -153,5 +203,23 @@ public class PlayerMovement : MonoBehaviour
 
         if (characterController.velocity.y < -1 && characterController.isGrounded)
             moveDirection.y = 0;
+    }
+    private IEnumerator RegenerateHealth()
+    {
+        yield return new WaitForSeconds(timeBeforeRegenStarts);
+        WaitForSeconds timeToWait = new WaitForSeconds(healthTimeIncrement);
+
+        while(currentHealth < maxHealth)
+        {
+            currentHealth += healthValueIncrement;
+
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            OnHeal?.Invoke(currentHealth);
+            yield return timeToWait;
+        }
+        regeneratingHealth = null;
     }
 }
