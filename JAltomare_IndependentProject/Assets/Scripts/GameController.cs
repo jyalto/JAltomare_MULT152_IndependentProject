@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-
+    // Bird Collector
     public int collectible = 0;
     public bool collectedAll = false;
     public bool nestFilled = false;
+
+    // If contact with tornado, reset Birds
     public bool needToSpawnBirds = false;
     public bool deleteBirds = false;
 
-    // Player Stats
-    private int playerHP = 10;
+    // Gem Collectors
+    public int fireCore = 0;
+    public bool collectedAllFire = false;
+    public bool firePillarActive = false;
+    public int earthCore = 0;
+    public bool collectedAllEarth = false;
+    public bool earthPillarActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +30,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Update Bird Counter
         if (collectible >= 5)
         {
             collectedAll = true;
@@ -30,6 +38,26 @@ public class GameController : MonoBehaviour
         else
         {
             collectedAll = false;
+        }
+
+        // Update Fire Gem Counter
+        if (fireCore >= 4)
+        {
+            collectedAllFire = true;
+        }
+        else
+        {
+            collectedAllFire = false;
+        }
+
+        // Update Earth Gem Counter
+        if (earthCore >= 4)
+        {
+            collectedAllEarth = true;
+        }
+        else
+        {
+            collectedAllEarth = false;
         }
     }
 }

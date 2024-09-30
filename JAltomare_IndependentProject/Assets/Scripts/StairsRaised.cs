@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bridge : MonoBehaviour
+public class StairsRaised : MonoBehaviour
 {
     private GameController gc;
 
@@ -15,9 +15,9 @@ public class Bridge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gc.nestFilled == true)
+        if (gc.firePillarActive == true && gc.earthPillarActive == true)
         {
-            transform.position = new Vector3(-22.16f, 41.35f, -59.43f);
+            transform.position = new Vector3(59.2f, 103.8f, 184.7f);
         }
     }
 }

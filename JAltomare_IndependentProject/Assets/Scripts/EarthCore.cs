@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bridge : MonoBehaviour
+public class EarthCore : MonoBehaviour
 {
     private GameController gc;
-
     // Start is called before the first frame update
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (gc.nestFilled == true)
+        if (other.CompareTag("Player"))
         {
-            transform.position = new Vector3(-22.16f, 41.35f, -59.43f);
+            Destroy(gameObject);
+            gc.earthCore++;
+
         }
     }
 }

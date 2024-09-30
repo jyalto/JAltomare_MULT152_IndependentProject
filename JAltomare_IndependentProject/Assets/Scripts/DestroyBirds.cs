@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroyBirds : MonoBehaviour
 {
-    GameController gc;
+    private GameController gc;
     // Start is called before the first frame update
     void Start()
     {

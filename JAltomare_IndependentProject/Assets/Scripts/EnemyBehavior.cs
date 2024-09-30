@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     private int lives = 3;
+
+    public GameObject corePrefab;
     public int enemyLives
     {
         get { return lives; }
@@ -15,8 +17,9 @@ public class EnemyBehavior : MonoBehaviour
 
             if (lives <= 0)
             {
+                // Debug.Log("Enemy down.");
+                Instantiate(corePrefab, this.transform.position, this.transform.rotation);
                 Destroy(this.gameObject);
-                Debug.Log("Enemy down.");
             }
         }
     }
