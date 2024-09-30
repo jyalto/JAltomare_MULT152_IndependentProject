@@ -8,6 +8,7 @@ public class EnemyShoot : MonoBehaviour
     public GameObject enemyProjectile;
     private Transform target;
     public Transform shootPoint;
+    public float shootRange = 10f;
     public float turnSpeed = 10f;
     public float fireRate = 1f;
 
@@ -22,8 +23,9 @@ public class EnemyShoot : MonoBehaviour
 
         Vector3 direction = target.position - transform.position;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
+        float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-        if (fireRate <= 0)
+        if (distanceToPlayer <= shootRange && fireRate <= 0)
         {
             Shoot();
             fireRate = 1f;

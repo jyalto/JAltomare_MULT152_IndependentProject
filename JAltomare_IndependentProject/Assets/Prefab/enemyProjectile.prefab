@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6160818889026785707}
   - component: {fileID: 3747908350017941374}
   - component: {fileID: 3266855408365629287}
-  - component: {fileID: 4704578238319940172}
   - component: {fileID: 5729783828420870210}
+  - component: {fileID: 1102326028785672547}
   m_Layer: 0
   m_Name: enemyProjectile
   m_TagString: Untagged
@@ -99,22 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &4704578238319940172
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4793749806703221859}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
 --- !u!114 &5729783828420870210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,3 +112,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10000
+--- !u!54 &1102326028785672547
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4793749806703221859}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

@@ -523,6 +523,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 230028132}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &84654112
@@ -1130,7 +1131,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305561658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.65, y: 56.95, z: 236.05}
+  m_LocalPosition: {x: 52.3, y: 31.97, z: -35.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2117,6 +2118,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 2112262609}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &695168189
@@ -2721,6 +2723,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 71471877}
+  shootRange: 15
   turnSpeed: 5
   fireRate: 2
 --- !u!114 &819639735
@@ -3249,7 +3252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 921083533}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.863987, y: -3.7116241, z: 123.23664}
+  m_LocalPosition: {x: 54.863987, y: -3.7116241, z: 123.03}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3725,7 +3728,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7800cdf1b0f63194aa23395a546136ab, type: 2}
+  - {fileID: 2100000, guid: 8b899ec7eb012c448b481e06806ee96e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4201,6 +4204,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 362845659}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &1185130204
@@ -4666,6 +4670,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 1474035123}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &1364733034
@@ -4874,6 +4879,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 74473121}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &1392751508
@@ -5230,6 +5236,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 288932739}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &1405075102
@@ -5360,6 +5367,7 @@ MonoBehaviour:
   enemyProjectile: {fileID: 4793749806703221859, guid: 3acd9aaa6570f5c43a30a21f57b4735b,
     type: 3}
   shootPoint: {fileID: 520723245}
+  shootRange: 10
   turnSpeed: 5
   fireRate: 2
 --- !u!136 &1445525547
@@ -7278,7 +7286,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7800cdf1b0f63194aa23395a546136ab, type: 2}
+  - {fileID: 2100000, guid: 8b899ec7eb012c448b481e06806ee96e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7332,7 +7340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1912397599}
-  - component: {fileID: 1912397598}
+  - component: {fileID: 1912397600}
   m_Layer: 6
   m_Name: Bridge1
   m_TagString: Untagged
@@ -7340,7 +7348,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1912397598
+--- !u!4 &1912397599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912397597}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -22.16, y: 61.28, z: -59.425}
+  m_LocalScale: {x: 1.9568, y: 1, z: 1.3982465}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2003962569}
+  - {fileID: 1295095815}
+  - {fileID: 921083534}
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1912397600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7352,25 +7378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bed4e380544e2b46898e6621bb6c427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bridge1: {fileID: 1912397597}
---- !u!4 &1912397599
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912397597}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.01601, y: 40, z: -9.58664}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2003962569}
-  - {fileID: 1295095815}
-  - {fileID: 921083534}
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  bridge1: {fileID: 0}
 --- !u!1 &1990332345
 GameObject:
   m_ObjectHideFlags: 0
@@ -7495,7 +7503,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2003962568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.863987, y: -3.7116241, z: 112.176636}
+  m_LocalPosition: {x: 54.863987, y: -3.7116241, z: 112.32}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
