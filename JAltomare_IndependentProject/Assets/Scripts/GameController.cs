@@ -21,6 +21,9 @@ public class GameController : MonoBehaviour
     public bool collectedAllEarth = false;
     public bool earthPillarActive = false;
 
+    // Meet the Gamayun
+    public bool meetGamayun = false;
+
     // Start is called before the first frame update
     void Start()
     {

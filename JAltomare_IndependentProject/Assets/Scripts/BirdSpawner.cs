@@ -7,7 +7,7 @@ public class BirdSpawner : MonoBehaviour
     public GameObject birdPrefab; // Reference to the baby bird prefab
     public int numberOfBirds = 5; // Number of birds to spawn
 
-    public Vector3[] positionArray = new[] { new Vector3(53f, 41f, 65f), new Vector3(91f, 41f, 42f), new Vector3(32f, 41f, 46f), new Vector3(76f, 41f, 5f), new Vector3(45f, 41f, 0f) };
+    public Vector3[] positionArray = new[] { new Vector3(53f, 42f, 65f), new Vector3(91f, 42f, 42f), new Vector3(32f, 42f, 46f), new Vector3(76f, 42f, 5f), new Vector3(45f, 42f, 0f) };
 
     GameController gc;
 

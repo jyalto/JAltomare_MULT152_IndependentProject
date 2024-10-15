@@ -24,7 +24,7 @@ public class EnemyProjectile : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-                PlayerMovement.OnTakeDamage(10);
+                PlayerController.OnTakeDamage(10);
 
         Destroy(gameObject);
     }

@@ -14,12 +14,15 @@ public class TornadoMovement : MonoBehaviour
     private int locationIndex = 0;
     private NavMeshAgent agent;
 
+    private GameController gc;
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         InitializeTornadoMovement();
         MoveToNextTornadoLocation();
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
@@ -28,6 +31,10 @@ public class TornadoMovement : MonoBehaviour
         if (agent.remainingDistance < 0.2f && !agent.pathPending) 
         {
             MoveToNextTornadoLocation();
+        }
+        if (gc.nestFilled == true)
+        {
+            Destroy(this.gameObject);
         }
     }
     void InitializeTornadoMovement()

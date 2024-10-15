@@ -17,7 +17,7 @@ public class Bridge : MonoBehaviour
     {
         if (gc.nestFilled == true)
         {
-            transform.position = new Vector3(-22.16f, 41.35f, -59.43f);
+            transform.position = new Vector3(84.8f, 41.1f, 116.0f);
         }
     }
 }
