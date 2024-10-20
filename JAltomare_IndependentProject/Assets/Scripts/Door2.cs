@@ -15,9 +15,9 @@ public class Door2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gc.meetGamayun == true)
+        if (gc.gameOver == true)
         {
-            transform.position = new Vector3(29f, 44.1f, 363.3f);
+            transform.position = new Vector3(31.5f, 58.9f, 128.11f);
         }
     }
 }

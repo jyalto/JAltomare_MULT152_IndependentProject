@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     public bool CanMove { get; private set; } = true;
     private bool IsSprinting => canSprint && Input.GetKey(sprintKey);
-    private bool ShouldJump => Input.GetKey(jumpKey) && characterController.isGrounded;
+    public bool ShouldJump => Input.GetKey(jumpkey) && characterController.isGrounded;
 
     //private GameController gc;
 
@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
 
     // Controls
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
-    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private KeyCode jumpkey = KeyCode.Space;
 
     // Movement Parameters
     [SerializeField] private float walkSpeed = 3.0f;
@@ -48,24 +48,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 8.0f;
     [SerializeField] private float gravity = 30.0f;
 
-    // Interaction
-    [SerializeField] private Vector3 interactionRayPoint = default;
-    [SerializeField] private float interactionDistance = default;
-    [SerializeField] private LayerMask interactionLayer = default;
-    private Interactable currentInteractable;
-
-
     private Camera playerCamera;
     public CharacterController characterController;
+    private AudioSource asPlayer;
+    private GameController gc;
+    public Transform shootPoint;
+
+    //Audio Clips
+    public AudioClip birdPickup;
 
     private Vector3 moveDirection;
     private Vector2 currentInput;
-
     private float rotationX = 0;
 
     // Shooting
     public GameObject projectile;
-    public float projectileSpeed = 100f;
+    public float projectileSpeed = 10f;
     private bool isShooting;
 
     private void OnEnable()
@@ -79,9 +77,10 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        //gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         playerCamera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
+        asPlayer = GetComponent<AudioSource>();
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         currentHealth = maxHealth;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -89,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (CanMove)
+        if (CanMove && !gc.gameOver)
         {
             HandleMovementInput();
             HandleMouseLook();
@@ -98,32 +97,37 @@ public class PlayerController : MonoBehaviour
             {
                 HandleJump();
             }
-            if (canInteract)
-            {
-                HandleInteractionCheck();
-                HandleInteractionInput();
-            }
             ApplyFinalMovements();
         }
         isShooting |= Input.GetKeyDown(KeyCode.Alpha1);
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BabyBird"))
+        {
+            asPlayer.PlayOneShot(birdPickup, 2.0f);
+        }
+
     }
     private void FixedUpdate()
     {
         if (isShooting)
         {
-            GameObject newProjectile = Instantiate(projectile, this.transform.position + new Vector3(0, 2, 0), this.transform.rotation);
+            GameObject newProjectile = Instantiate(projectile, shootPoint.position, shootPoint.rotation);
             Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
-            ProjectileRB.velocity = this.transform.forward * projectileSpeed;
+            ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
             isShooting = false;
+
         }
     }
     private void HandleMovementInput()
     {
         currentInput = new Vector2((IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxisRaw("Vertical"), (IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxisRaw("Horizontal"));
-
         float moveDirectionY = moveDirection.y;
         moveDirection = (transform.TransformDirection(Vector3.forward) * currentInput.x + transform.TransformDirection(Vector3.right) * currentInput.y);
         moveDirection.y = moveDirectionY;
+
     }
     private void HandleMouseLook()
     {
@@ -138,34 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             moveDirection.y = jumpForce;
         }
-    }
-    private void HandleInteractionCheck()
-    {
-        if (Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance))
-        {
-            if (hit.collider.gameObject.layer == 8 && (currentInteractable == null || hit.collider.gameObject.GetInstanceID() != currentInteractable.gameObject.GetInstanceID()))
-            {
-                hit.collider.TryGetComponent(out currentInteractable);
 
-                if (currentInteractable)
-                {
-                    currentInteractable.OnFocus();
-                }
-            }
-        }
-        else if (currentInteractable)
-        {
-            currentInteractable.OnLoseFocus();
-            currentInteractable = null;
-        }
-
-    }
-    private void HandleInteractionInput()
-    {
-        if (Input.GetKeyDown(interactKey) && currentInteractable != null && Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer))
-        {
-            currentInteractable.OnInteract();
-        }
     }
     private void ApplyDamage(float dmg)
     {
@@ -181,8 +158,6 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(regeneratingHealth);
         }
         regeneratingHealth = StartCoroutine(RegenerateHealth());
-
-
     }
     private void KillPlayer()
     {
@@ -203,7 +178,10 @@ public class PlayerController : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
 
         if (characterController.velocity.y < -1 && characterController.isGrounded)
+        {
             moveDirection.y = 0;
+        }
+
     }
     private IEnumerator RegenerateHealth()
     {

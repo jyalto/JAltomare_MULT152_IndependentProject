@@ -10,7 +10,8 @@ public class EnemyShoot : MonoBehaviour
     public Transform shootPoint;
     public float shootRange = 10f;
     public float turnSpeed = 10f;
-    public float fireRate = 1f;
+    public float fireRate = 2f;
+    public float projectileSpeed = 800f;
 
     private void Start()
     {
@@ -28,11 +29,15 @@ public class EnemyShoot : MonoBehaviour
         if (distanceToPlayer <= shootRange && fireRate <= 0)
         {
             Shoot();
-            fireRate = 1f;
+            fireRate = 2f;
         }
     }
     void Shoot()
     {
-        Instantiate(enemyProjectile, shootPoint.position, shootPoint.rotation);
+        GameObject newEnemyProjectile = Instantiate(enemyProjectile, shootPoint.position, shootPoint.rotation);
+        Rigidbody ProjectileRB = newEnemyProjectile.GetComponent<Rigidbody>();
+        Transform target = GameObject.FindGameObjectWithTag("Player").transform;
+        Vector3 direction = target.position - transform.position;
+        ProjectileRB.AddForce(direction * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
     }
 }

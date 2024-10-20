@@ -17,7 +17,7 @@ public class StairsRaised : MonoBehaviour
     {
         if (gc.firePillarActive == true && gc.earthPillarActive == true)
         {
-            transform.position = new Vector3(84.8f, 38f, 174.5f);
+            transform.position = new Vector3(26.85f, 54.56f, 118.58f);
         }
     }
 }

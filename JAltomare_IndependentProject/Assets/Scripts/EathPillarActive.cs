@@ -5,21 +5,26 @@ using UnityEngine;
 public class EathPillarActive : MonoBehaviour
 {
     GameController gc;
-    public GameObject activeEarthTower;
+    public ParticleSystem iceSystem;
 
     // Start is called before the first frame update
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        iceSystem = GetComponentInChildren<ParticleSystem>();
+    }
+    private void Update()
+    {
+        if (gc.gameOver == true)
+        {
+            iceSystem.Stop();
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && gc.collectedAllEarth == true)
         {
-            Destroy(gameObject);
-
-            Instantiate(activeEarthTower, activeEarthTower.transform.position, activeEarthTower.transform.rotation);
-
+            iceSystem.Play();
             gc.earthPillarActive = true;
         }
     }

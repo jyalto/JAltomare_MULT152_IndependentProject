@@ -86,7 +86,7 @@ Material:
     - _ReflectionsCutoffScrollSpeed1: -0.615
     - _ReflectionsOpacity: 0.065
     - _ReflectionsScale: 6
-    - _ReflectionsScrollSpeed: -0.028
+    - _ReflectionsScrollSpeed: -0.539
     - _RefractionAmount: 0.094
     - _RefractionCutoffScale: 15.63
     - _RefractionIntensity: 0.08

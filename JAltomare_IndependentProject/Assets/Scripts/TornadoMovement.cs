@@ -13,6 +13,7 @@ public class TornadoMovement : MonoBehaviour
 
     private int locationIndex = 0;
     private NavMeshAgent agent;
+    //private AudioSource tornAudio;
 
     private GameController gc;
 
@@ -23,6 +24,7 @@ public class TornadoMovement : MonoBehaviour
         InitializeTornadoMovement();
         MoveToNextTornadoLocation();
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        //tornAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,6 +34,7 @@ public class TornadoMovement : MonoBehaviour
         {
             MoveToNextTornadoLocation();
         }
+        //tornAudio.Play();
         if (gc.nestFilled == true)
         {
             Destroy(this.gameObject);

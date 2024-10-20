@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectileBehavior : MonoBehaviour
 {
-    public float OnscreenDelay = 3f;
+    public float OnscreenDelay = 2f;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,5 +15,12 @@ public class ProjectileBehavior : MonoBehaviour
     void Update()
     {
         
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
