@@ -6,17 +6,16 @@ public class EnviroParticles : MonoBehaviour
 {
     // Start is called before the first frame update
     public ParticleSystem windSystem;
-    private GameController gc;
+    public GameManager gameManager;
     void Start()
     {
         windSystem.Play();
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(gc.nestFilled == true)
+        if(gameManager.nestFilled == true)
         {
             windSystem.Stop();
         }

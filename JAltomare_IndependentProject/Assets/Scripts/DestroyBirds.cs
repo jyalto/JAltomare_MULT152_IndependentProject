@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class DestroyBirds : MonoBehaviour
 {
-    private GameController gc;
+    public GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
     }
 
     private void Update()
     {
-        if (gc.deleteBirds == true)
+        if (gameManager.deleteBirds == true)
         {
             GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("BabyBird");
             foreach (GameObject obj in objectsWithTag) 
             {
                 Destroy(obj);
             }
-            gc.deleteBirds = false;
-            gc.needToSpawnBirds = true;
+            gameManager.deleteBirds = false;
+            gameManager.needToSpawnBirds = true;
         }
 
 

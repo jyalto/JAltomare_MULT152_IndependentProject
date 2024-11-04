@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Gamayun : MonoBehaviour
 {
-    private GameController gc;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class Gamayun : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            gc.meetGamayun = true;
+            gameManager.meetGamayun = true;
         }
     }
 }

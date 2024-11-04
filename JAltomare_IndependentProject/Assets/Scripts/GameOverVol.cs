@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameOverVol : MonoBehaviour
 {
-    private GameController gc;
+    public GameManager gameManager;
     private AudioSource Music1Vol;
     public GameObject player;
 
@@ -12,7 +12,6 @@ public class GameOverVol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         Music1Vol = GameObject.FindGameObjectWithTag("MusicVolume").GetComponent<AudioSource>();
     }
 
@@ -25,7 +24,7 @@ public class GameOverVol : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            gc.gameOver = true;
+            gameManager.gameOver = true;
             Music1Vol.Stop();
             player.gameObject.GetComponent<Animator>().enabled = false;
         }

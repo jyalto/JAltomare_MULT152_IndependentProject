@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class FirePillarActive : MonoBehaviour
 {
-    GameController gc;
+    public GameManager gameManager;
     public ParticleSystem fireSystem;
 
     // Start is called before the first frame update
     void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
         fireSystem = GetComponentInChildren<ParticleSystem>();
     }
     private void Update()
     {
-        if (gc.gameOver == true)
+        if (gameManager.gameOver == true)
         {
             fireSystem.Stop();
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && gc.collectedAllFire == true)
+        if (other.CompareTag("Player") && gameManager.collectedAllFire == true)
         {
             fireSystem.Play();
-            gc.firePillarActive = true;
+            gameManager.firePillarActive = true;
         }
 
     }

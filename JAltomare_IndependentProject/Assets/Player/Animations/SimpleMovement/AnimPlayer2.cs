@@ -6,13 +6,12 @@ using UnityEngine;
 public class AnimPlayer2 : MonoBehaviour
 {
     Animator animator;
-    private GameController gc;
+    int jumpHash = Animator.StringToHash("Jump");
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
@@ -56,6 +55,18 @@ public class AnimPlayer2 : MonoBehaviour
         if (!Input.GetKey(KeyCode.S))
         {
             animator.SetBool("runBackward", false);
+        }
+
+        // JUMP
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger(jumpHash);
+        }
+
+        // CAST SPELL
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            animator.SetTrigger("CastSpell");
         }
     }
 }

@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class ResetBirds : MonoBehaviour
 {
-    GameController gc;
+    public GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            gc.collectible = 0;
-            gc.deleteBirds = true;
+            gameManager.collectibleBird = 0;
+            gameManager.deleteBirds = true;
 
         }
     }

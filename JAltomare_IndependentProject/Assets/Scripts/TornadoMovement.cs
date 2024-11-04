@@ -4,18 +4,13 @@ using UnityEngine.AI;
 
 public class TornadoMovement : MonoBehaviour
 {
-
-    //[SerializeField] private NavMeshAgent agent;
-    //[SerializeField] private Transform target;
-
     public Transform TornadoRoute;
     public List<Transform> Locations;
 
     private int locationIndex = 0;
     private NavMeshAgent agent;
-    //private AudioSource tornAudio;
 
-    private GameController gc;
+    public GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +18,6 @@ public class TornadoMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         InitializeTornadoMovement();
         MoveToNextTornadoLocation();
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        //tornAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -34,8 +27,7 @@ public class TornadoMovement : MonoBehaviour
         {
             MoveToNextTornadoLocation();
         }
-        //tornAudio.Play();
-        if (gc.nestFilled == true)
+        if (gameManager.nestFilled == true)
         {
             Destroy(this.gameObject);
         }

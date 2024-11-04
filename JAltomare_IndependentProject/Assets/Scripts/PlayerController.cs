@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private bool IsSprinting => canSprint && Input.GetKey(sprintKey);
     public bool ShouldJump => Input.GetKey(jumpkey) && characterController.isGrounded;
 
-    //private GameController gc;
+
 
     // Functional Options 
     [SerializeField] private bool canSprint = true;
@@ -50,8 +50,9 @@ public class PlayerController : MonoBehaviour
 
     private Camera playerCamera;
     public CharacterController characterController;
+    public Animator playerAnim;
     private AudioSource asPlayer;
-    private GameController gc;
+    public GameManager gameManager;
     public Transform shootPoint;
 
     //Audio Clips
@@ -62,9 +63,11 @@ public class PlayerController : MonoBehaviour
     private float rotationX = 0;
 
     // Shooting
-    public GameObject projectile;
-    public float projectileSpeed = 10f;
-    private bool isShooting;
+    public GameObject fireProjectile;
+    public GameObject iceProjectile;
+    public float projectileSpeed = 20f;
+    private bool isShootingFire;
+    private bool isShootingIce;
 
     private void OnEnable()
     {
@@ -79,8 +82,8 @@ public class PlayerController : MonoBehaviour
     {
         playerCamera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
+        playerAnim = GetComponent<Animator>();
         asPlayer = GetComponent<AudioSource>();
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         currentHealth = maxHealth;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (CanMove && !gc.gameOver)
+        if (CanMove && !gameManager.gameOver)
         {
             HandleMovementInput();
             HandleMouseLook();
@@ -99,8 +102,22 @@ public class PlayerController : MonoBehaviour
             }
             ApplyFinalMovements();
         }
-        isShooting |= Input.GetKeyDown(KeyCode.Alpha1);
+        if (GameManager.Instance.canShootFire == true && characterController.isGrounded)
+        {
+            isShootingFire |= Input.GetKeyDown(KeyCode.Alpha1);
+        }
+        if (GameManager.Instance.canShootIce == true && characterController.isGrounded)
+        {
+            isShootingIce |= Input.GetKeyDown(KeyCode.Alpha2);
+        }
 
+        if (characterController.isGrounded == true) 
+        {
+            playerAnim.SetBool("isGrounded", true);
+            playerAnim.SetBool("isFalling", false);
+            playerAnim.SetBool("isJumping", false);
+            Debug.Log("Character is Grounded");
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -112,22 +129,33 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (isShooting)
-        {
-            GameObject newProjectile = Instantiate(projectile, shootPoint.position, shootPoint.rotation);
-            Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
-            ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
-            isShooting = false;
 
-        }
+            if (isShootingFire)
+            {
+                GameObject newProjectile = Instantiate(fireProjectile, shootPoint.position, shootPoint.rotation);
+                Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
+                ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
+                playerAnim.SetTrigger("CastSpell");
+                isShootingFire = false;
+            }
+
+            if (isShootingIce)
+            {
+                GameObject newProjectile = Instantiate(iceProjectile, shootPoint.position, shootPoint.rotation);
+                Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
+                ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
+                playerAnim.SetTrigger("CastSpell");
+                isShootingIce = false;
+            }
+ 
     }
+
     private void HandleMovementInput()
     {
         currentInput = new Vector2((IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxisRaw("Vertical"), (IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxisRaw("Horizontal"));
         float moveDirectionY = moveDirection.y;
         moveDirection = (transform.TransformDirection(Vector3.forward) * currentInput.x + transform.TransformDirection(Vector3.right) * currentInput.y);
         moveDirection.y = moveDirectionY;
-
     }
     private void HandleMouseLook()
     {
@@ -141,6 +169,7 @@ public class PlayerController : MonoBehaviour
         if (ShouldJump)
         {
             moveDirection.y = jumpForce;
+            playerAnim.SetBool("isJumping", true);
         }
 
     }
@@ -174,12 +203,16 @@ public class PlayerController : MonoBehaviour
         if (!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
+            playerAnim.SetBool("isFalling", true);
         }
+
         characterController.Move(moveDirection * Time.deltaTime);
 
         if (characterController.velocity.y < -1 && characterController.isGrounded)
         {
-            moveDirection.y = 0;
+            moveDirection.y = 0; 
+            //playerAnim.SetBool("isFalling", false);
+            //playerAnim.SetBool("isJumping", false);
         }
 
     }

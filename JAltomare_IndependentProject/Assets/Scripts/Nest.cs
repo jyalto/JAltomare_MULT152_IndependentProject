@@ -5,20 +5,19 @@ using UnityEngine;
 
 public class Nest : MonoBehaviour
 { 
-    GameController gc;
+    public GameManager gameManager;
     public GameObject birdGroup;
-
 
     void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && gc.collectedAll == true)
+        if (other.CompareTag("Player") && gameManager.collectedAll == true)
         {
         Instantiate(birdGroup, birdGroup.transform.position, birdGroup.transform.rotation);
-        gc.nestFilled = true;
+        gameManager.nestFilled = true;
         }
     }
 }   
