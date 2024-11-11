@@ -4,24 +4,26 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    Rigidbody rb;
-
+    public float OnscreenDelay = 2f;
+    private AudioSource asFireProj;
+    public AudioClip fireImpact;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        //Transform target = GameObject.FindGameObjectWithTag("Player").transform;
-        //Vector3 direction = target.position - transform.position;
-        //rb.AddForce(direction * speed * Time.deltaTime);
+        Destroy(this.gameObject, OnscreenDelay);
+        asFireProj = GetComponent<AudioSource>();
     }
     private void Update()
     {
 
     }
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
-                PlayerController.OnTakeDamage(10);
-        Destroy(gameObject);
+        if (other.CompareTag("Player") && !GameManager.Instance.playerDead)
+        {
+            PlayerController.OnTakeDamage(20);
+            asFireProj.PlayOneShot(fireImpact);
+            Destroy(gameObject);
+        }
     }
 }
 

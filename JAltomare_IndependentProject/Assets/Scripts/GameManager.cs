@@ -26,9 +26,22 @@ public class GameManager : MonoBehaviour
     public bool canShootFire = false;
     public bool canShootIce = false;
 
+    // If Player dies Respawning Elementals
+    public bool deleteElementals = false;
+    public bool needtoSpawnElementals = false;
+
     // Meet the Gamayun
     public bool gameOver = false;
     public bool meetGamayun = false;
+
+    // Player healing triggered
+    //public bool playerHealing = false;
+
+    //Respawning After Death
+    //public Transform spawnPoint;
+    //public GameObject player;
+    //private PlayerController playerController;
+    public bool playerDead = false;
 
     private void Awake()
     {
@@ -37,7 +50,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //Physics.autoSyncTransforms = true;
+        //playerController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -72,5 +86,16 @@ public class GameManager : MonoBehaviour
         {
             collectedAllEarth = false;
         }
+        //if (playerDead == true)
+        //{
+        //    playerController.enabled = false;
+        //    Restart();
+        //}
     }
+    //public void Restart()
+    //{
+    //    player.transform.position = spawnPoint.position;
+    //    player.transform.rotation = spawnPoint.rotation;
+    //    playerController.enabled = true;
+    //}
 }

@@ -36,13 +36,16 @@ public class PlayerController : MonoBehaviour
     // Health Parameters
     [SerializeField] private float maxHealth = 100;
     [SerializeField] private float timeBeforeRegenStarts = 4;
-    [SerializeField] private float healthValueIncrement = 1;
+    [SerializeField] private float healthValueIncrement = 1.0f;
     [SerializeField] private float healthTimeIncrement = 0.05f;
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     private Coroutine regeneratingHealth;
     public static Action<float> OnTakeDamage;
     public static Action<float> OnDamage;
-    public static Action<float> OnHeal;
+    //public static Action OnHeal;
+
+    public Transform spawnPoint;
+
 
     // Jump Parameters
     [SerializeField] private float jumpForce = 8.0f;
@@ -50,13 +53,18 @@ public class PlayerController : MonoBehaviour
 
     private Camera playerCamera;
     public CharacterController characterController;
-    public Animator playerAnim;
+    private PlayerController playerController;
+    private Animator playerAnim;
     private AudioSource asPlayer;
     public GameManager gameManager;
     public Transform shootPoint;
 
     //Audio Clips
     public AudioClip birdPickup;
+    public AudioClip healingIncoming;
+    public AudioClip fireImpact;
+
+    public ParticleSystem healSystem;
 
     private Vector3 moveDirection;
     private Vector2 currentInput;
@@ -82,11 +90,13 @@ public class PlayerController : MonoBehaviour
     {
         playerCamera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
+        playerController = GetComponent<PlayerController>();
         playerAnim = GetComponent<Animator>();
         asPlayer = GetComponent<AudioSource>();
         currentHealth = maxHealth;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Physics.autoSyncTransforms = true;
     }
 
     void Update()
@@ -125,29 +135,48 @@ public class PlayerController : MonoBehaviour
         {
             asPlayer.PlayOneShot(birdPickup, 2.0f);
         }
+        if (other.CompareTag("HealingCircle"))
+        {
+            regeneratingHealth = StartCoroutine(RegenHealthOverTime());
+            asPlayer.PlayOneShot(healingIncoming, 1f);
+            healSystem.Play();
+        }
 
     }
-    private void FixedUpdate()
+    private void OnTriggerExit(Collider other)
     {
 
-            if (isShootingFire)
-            {
-                GameObject newProjectile = Instantiate(fireProjectile, shootPoint.position, shootPoint.rotation);
-                Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
-                ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
-                playerAnim.SetTrigger("CastSpell");
-                isShootingFire = false;
-            }
+        if (other.CompareTag("HealingCircle") && regeneratingHealth != null)
+        {
+            StopCoroutine(regeneratingHealth);
+        }
+        if (other.CompareTag("HealingCircle"))
+        {
+            healSystem.Stop();
+        }
 
-            if (isShootingIce)
-            {
-                GameObject newProjectile = Instantiate(iceProjectile, shootPoint.position, shootPoint.rotation);
-                Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
-                ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
-                playerAnim.SetTrigger("CastSpell");
-                isShootingIce = false;
-            }
- 
+    }
+
+    private void FixedUpdate()
+    {
+        if (isShootingFire)
+        {
+            GameObject newProjectile = Instantiate(fireProjectile, shootPoint.position, shootPoint.rotation);
+            Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
+            ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
+            playerAnim.SetTrigger("CastSpell");
+            isShootingFire = false;
+        }
+
+        if (isShootingIce)
+        {
+            GameObject newProjectile = Instantiate(iceProjectile, shootPoint.position, shootPoint.rotation);
+            Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
+            ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
+            playerAnim.SetTrigger("CastSpell");
+            isShootingIce = false;
+        }
+
     }
 
     private void HandleMovementInput()
@@ -171,32 +200,26 @@ public class PlayerController : MonoBehaviour
             moveDirection.y = jumpForce;
             playerAnim.SetBool("isJumping", true);
         }
-
     }
     private void ApplyDamage(float dmg)
     {
         currentHealth -= dmg;
         OnDamage?.Invoke(currentHealth);
+        asPlayer.PlayOneShot(fireImpact, 1f);
 
         if (currentHealth <= 0)
         {
             KillPlayer();
         }
-        else if (regeneratingHealth != null)
-        {
-            StopCoroutine(regeneratingHealth);
-        }
-        regeneratingHealth = StartCoroutine(RegenerateHealth());
     }
     private void KillPlayer()
     {
         currentHealth = 0;
+        playerAnim.SetBool("isDead", true);
+        playerController.enabled = false;
+        GameManager.Instance.playerDead = true;
 
-        if (regeneratingHealth != null)
-        {
-            StopCoroutine(regeneratingHealth);
-            print("DEAD");
-        }
+        Invoke("Respawn", 6);
     }
     private void ApplyFinalMovements()
     {
@@ -216,23 +239,32 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    private IEnumerator RegenerateHealth()
-    {
-        yield return new WaitForSeconds(timeBeforeRegenStarts);
-        WaitForSeconds timeToWait = new WaitForSeconds(healthTimeIncrement);
 
+    IEnumerator RegenHealthOverTime()
+    {
+        WaitForSeconds timeToWait = new WaitForSeconds(healthTimeIncrement);
         while (currentHealth < maxHealth)
         {
             currentHealth += healthValueIncrement;
-
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;
             }
-            OnHeal?.Invoke(currentHealth);
             yield return timeToWait;
         }
-        regeneratingHealth = null;
+    }
+    public void Respawn()
+    { 
+        currentHealth = maxHealth;
+        transform.position = spawnPoint.position;
+        transform.rotation = spawnPoint.rotation;
+        playerController.enabled = true;
+        playerAnim.SetBool("isDead", false);
+        playerAnim.SetTrigger("isRevived");
+        GameManager.Instance.playerDead = false;
+        GameManager.Instance.deleteElementals = true;
+        GameManager.Instance.fireCore = 0;
+        GameManager.Instance.iceCore = 0;
     }
 }
 

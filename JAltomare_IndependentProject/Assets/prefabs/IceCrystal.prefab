@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3375931959955084925}
   m_Layer: 0
   m_Name: IceCrystal
-  m_TagString: Untagged
+  m_TagString: Elemental
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

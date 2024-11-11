@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8681438322827436809}
   m_Layer: 0
   m_Name: FireCrystal
-  m_TagString: Untagged
+  m_TagString: Elemental
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
