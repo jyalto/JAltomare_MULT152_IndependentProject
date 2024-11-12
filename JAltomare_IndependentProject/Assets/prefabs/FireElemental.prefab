@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireShoot: {fileID: 8300000, guid: 674258a055e994b72bbb15a28eb79838, type: 3}
-  enemyProjectile: {fileID: 441560042233408203, guid: 66c03a5794e92b648a752d41ec8352e9,
+  enemyProjectile: {fileID: 1707102027251842, guid: 917f292877c866c40badaaa573f135f3,
     type: 3}
   shootPoint: {fileID: 1730579859980326464}
   shootRange: 20

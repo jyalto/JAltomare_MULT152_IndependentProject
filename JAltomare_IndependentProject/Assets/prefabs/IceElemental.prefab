@@ -4929,8 +4929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c1903f2e9d01244482e64431937765e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireHit: {fileID: 8300000, guid: 07bb92ee9db78484e913e79461525151, type: 3}
-  enemyProjectile: {fileID: 2278142634161061559, guid: 3eb3153662a6bc04c877892de376d284,
+  iceShoot: {fileID: 8300000, guid: 8171342f1983747b3a1e3a85ad95097b, type: 3}
+  enemyProjectile: {fileID: 1746672929845058, guid: 41a556df30d858a4b95c55eb3dceb457,
     type: 3}
   shootPoint: {fileID: 3485754533151495652}
   shootRange: 20

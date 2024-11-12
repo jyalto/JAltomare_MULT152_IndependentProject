@@ -35,14 +35,13 @@ public class PlayerController : MonoBehaviour
 
     // Health Parameters
     [SerializeField] private float maxHealth = 100;
-    [SerializeField] private float timeBeforeRegenStarts = 4;
     [SerializeField] private float healthValueIncrement = 1.0f;
     [SerializeField] private float healthTimeIncrement = 0.05f;
     [SerializeField] private float currentHealth;
     private Coroutine regeneratingHealth;
     public static Action<float> OnTakeDamage;
     public static Action<float> OnDamage;
-    //public static Action OnHeal;
+    public static Action<float> OnHeal;
 
     public Transform spawnPoint;
 
@@ -62,9 +61,12 @@ public class PlayerController : MonoBehaviour
     //Audio Clips
     public AudioClip birdPickup;
     public AudioClip healingIncoming;
-    public AudioClip fireImpact;
+    public AudioClip fireShoot;
+    public AudioClip iceShoot;
 
     public ParticleSystem healSystem;
+    public ParticleSystem fireImpact;
+    public ParticleSystem iceImpact;
 
     private Vector3 moveDirection;
     private Vector2 currentInput;
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
     // Shooting
     public GameObject fireProjectile;
     public GameObject iceProjectile;
-    public float projectileSpeed = 20f;
+    public float projectileSpeed = 1000.0f;
     private bool isShootingFire;
     private bool isShootingIce;
 
@@ -138,7 +140,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("HealingCircle"))
         {
             regeneratingHealth = StartCoroutine(RegenHealthOverTime());
-            asPlayer.PlayOneShot(healingIncoming, 1f);
+            asPlayer.PlayOneShot(healingIncoming, .25f);
             healSystem.Play();
         }
 
@@ -165,6 +167,7 @@ public class PlayerController : MonoBehaviour
             Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
             ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
             playerAnim.SetTrigger("CastSpell");
+            asPlayer.PlayOneShot(fireShoot, .25f);
             isShootingFire = false;
         }
 
@@ -174,6 +177,7 @@ public class PlayerController : MonoBehaviour
             Rigidbody ProjectileRB = newProjectile.GetComponent<Rigidbody>();
             ProjectileRB.AddForce(this.transform.forward * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
             playerAnim.SetTrigger("CastSpell");
+            asPlayer.PlayOneShot(iceShoot, .25f);
             isShootingIce = false;
         }
 
@@ -205,7 +209,8 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth -= dmg;
         OnDamage?.Invoke(currentHealth);
-        asPlayer.PlayOneShot(fireImpact, 1f);
+        fireImpact.Play();
+        iceImpact.Play();
 
         if (currentHealth <= 0)
         {
@@ -250,12 +255,14 @@ public class PlayerController : MonoBehaviour
             {
                 currentHealth = maxHealth;
             }
+            OnHeal?.Invoke(currentHealth);
             yield return timeToWait;
         }
     }
     public void Respawn()
     { 
         currentHealth = maxHealth;
+        OnHeal?.Invoke(currentHealth);
         transform.position = spawnPoint.position;
         transform.rotation = spawnPoint.rotation;
         playerController.enabled = true;

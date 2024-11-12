@@ -5,15 +5,15 @@ using UnityEngine;
 public class IceElementalBehavior : MonoBehaviour
 {
     private AudioSource asIceEle;
-    public AudioClip fireHit;
+    public AudioClip iceShoot;
 
     public GameObject enemyProjectile;
     private Transform target;
     public Transform shootPoint;
     public float shootRange = 20f;
     public float turnSpeed = 10f;
-    public float projectileSpeed = 1000f;
-    public float fireRate = 2f;
+    public float projectileSpeed = 500f;
+    public float fireRate = 3f;
     public int lives = 3;
 
     public GameObject corePrefab;
@@ -29,7 +29,7 @@ public class IceElementalBehavior : MonoBehaviour
         if (lives <= 0)
         {
             Debug.Log("Enemy down.");
-            Instantiate(corePrefab, this.transform.position + new Vector3 (0f, -3f, 0f), this.transform.rotation);
+            Instantiate(corePrefab, this.transform.position + new Vector3 (0f, -2.5f, 0f), this.transform.rotation);
             Destroy(this.gameObject);
         }
 
@@ -39,10 +39,10 @@ public class IceElementalBehavior : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-        if (distanceToPlayer <= shootRange && fireRate <= 0)
+        if (distanceToPlayer <= shootRange && fireRate <= 0 && !GameManager.Instance.playerDead)
         {
             Shoot();
-            fireRate = 2f;
+            fireRate = 3f;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -50,7 +50,7 @@ public class IceElementalBehavior : MonoBehaviour
         if (collision.gameObject.name == "playerFireProjectile(Clone)")
         {
             lives -= 1;
-            asIceEle.PlayOneShot(fireHit, 2.0f);
+
         }
     }
     void Shoot()
@@ -60,6 +60,7 @@ public class IceElementalBehavior : MonoBehaviour
         Transform target = GameObject.FindGameObjectWithTag("Player").transform;
         Vector3 direction = target.position - transform.position;
         ProjectileRB.AddForce(direction * projectileSpeed * Time.deltaTime, ForceMode.Impulse);
+        asIceEle.PlayOneShot(iceShoot, .25f);
     }
 
 }

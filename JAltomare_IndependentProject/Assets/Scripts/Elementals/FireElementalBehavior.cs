@@ -12,8 +12,8 @@ public class FireElementalBehavior : MonoBehaviour
     public Transform shootPoint;
     public float shootRange = 20f;
     public float turnSpeed = 10f;
-    public float projectileSpeed = 1000f;
-    public float fireRate = 2f;
+    public float projectileSpeed = 500f;
+    public float fireRate = 3f;
     public int lives = 3;
 
     public GameObject corePrefab;
@@ -29,7 +29,7 @@ public class FireElementalBehavior : MonoBehaviour
         if (lives <= 0)
         {
             Debug.Log("Enemy down.");
-            Instantiate(corePrefab, this.transform.position + new Vector3 (0f, -3f, 0f), this.transform.rotation);
+            Instantiate(corePrefab, this.transform.position + new Vector3 (0f, -2.5f, 0f), this.transform.rotation);
             Destroy(this.gameObject);
         }
 
@@ -42,7 +42,7 @@ public class FireElementalBehavior : MonoBehaviour
         if (distanceToPlayer <= shootRange && fireRate <= 0 && !GameManager.Instance.playerDead)
         {
             Shoot();
-            fireRate = 2f;
+            fireRate = 3f;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -50,7 +50,6 @@ public class FireElementalBehavior : MonoBehaviour
         if (collision.gameObject.name == "playerIceProjectile(Clone)")
         {
             lives -= 1;
-            //asFireEle.PlayOneShot(iceHit, 2.0f);
         }
     }
     void Shoot()

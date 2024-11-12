@@ -10,12 +10,12 @@ public class UI : MonoBehaviour
     private void OnEnable()
     {
         PlayerController.OnDamage += UpdateHealth;
-        //PlayerController.OnHeal += UpdateHealth;
+        PlayerController.OnHeal += UpdateHealth;
     }
     private void OnDisable()
     {
         PlayerController.OnDamage -= UpdateHealth;
-        //PlayerController.OnHeal -= UpdateHealth;
+        PlayerController.OnHeal -= UpdateHealth;
     }
 
     private void Start()
